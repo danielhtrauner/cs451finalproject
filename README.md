@@ -1,7 +1,7 @@
 cs451finalproject
 =================
 
-CS 451 (Machine Learning) Final Project
+CS 451 (Machine Learning) Final Project Proposal
 Daniel Trauner and Xi Wang
 Project Proposal
 
