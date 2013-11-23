@@ -11,12 +11,15 @@ All rights reserved.
 
 WORK LOG:
 ---------
-11/21/13 -- 3:30PM -> ?:??PM -- Started work
+11/21/13 -- 3:30PM -> 5:30PM -- Started work
+11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
 """
 
-import csv
+import csv				
 from random import shuffle
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.cross_validation import cross_val_score
+import numpy
 
 dictionary = {}
 
@@ -69,56 +72,26 @@ def encode_data(parsed_data):
 
 	return encoded_data
 
-def split(data, fraction):
-	'''
-	Splits the data into two parts -- one that's the
-	length of the given fraction of the entire set 
-	and another comprising what's left over -- returning
-	a tuple (maintaining the original order of the data).
-	'''
-	return (data[0:int(fraction*len(data))], data[int(fraction*len(data)):])
-
 def train_test(preprocessed_data):
 	'''
 	Trains a RandomForestClassifier from sklearn
 	using encoded_data where encoded_data is a list
 	of lists where each list is an example.
 	'''
-	split_fraction = 0.9
+	all_labels = list(person[0] for person in preprocessed_data)
+	all_features = list(person[4:] for person in preprocessed_data)
 
-	shuffle(preprocessed_data)
+	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
+	rf_classifier = RandomForestClassifier(n_jobs=2, n_estimators=10, max_depth=None, max_features='auto', min_samples_split=2, min_samples_leaf=1)
+	scores = cross_val_score(rf_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-	# admitted = []
-
-	# for person in preprocessed_data:
-	# 	if person[0] == 1:
-	# 		admitted.append(person)
-
-	# preprocessed_data = admitted
-
-	all_labels = split(list(person[0] for person in preprocessed_data), split_fraction)
-	all_features = split((list(person[4:] for person in preprocessed_data)), split_fraction)
-
-	# train on 90% of data
-	train_labels = all_labels[0]
-	train_features = all_features[0]
-
-	# test on 10% of data
-	test_labels = all_labels[1]
-	test_features = all_features[1]
-
-	print '\nTraining on', len(train_labels), 'examples...'
-	rf_classifier = RandomForestClassifier(n_estimators=100)
-	rf_classifier.fit(train_features, train_labels)
-
-	print 'Classifying', len(test_labels), 'examples...\n'
-	rf_correct_count = 0.0
-	for i in range(len(test_labels)):
-		rf_predictions = rf_classifier.predict(test_features)
-		if test_labels[i] == rf_predictions[i]:
-			rf_correct_count += 1
-
-	print 'RandomForestClassifier (n_estimators=' + str(rf_classifier.n_estimators) + '):', rf_correct_count/len(test_labels), '\n'
+	print 'RandomForestClassifier with:' 
+	print '\tn_estimators=' + str(rf_classifier.n_estimators)
+	print '\tmax_depth=' + str(rf_classifier.max_depth)
+	print '\tmax_features=' + str(rf_classifier.max_features)
+	print '\tmin_samples_split=' + str(rf_classifier.min_samples_split)
+	print '\tmin_samples_leaf=' + str(rf_classifier.min_samples_leaf)
+	print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
 
 def main():
 	parsed_training_data = parse_csv('data.csv')

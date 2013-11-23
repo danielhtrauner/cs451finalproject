@@ -1,7 +1,7 @@
 """
-main_lsvc.py
+main_knn.py 
 
-(LinearSVC)
+(KNeighborsClassifier)
 
 CS 451 (Machine Learning) Final Project
 
@@ -11,13 +11,13 @@ All rights reserved.
 
 WORK LOG:
 ---------
-11/21/13 -- 3:30PM -> ?:??PM -- Started work
+11/21/13 -- 3:30PM -> 5:30PM -- Started work
 11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
 """
 
-import csv
+import csv				
 from random import shuffle
-from sklearn.svm import LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import cross_val_score
 import numpy
 
@@ -74,22 +74,21 @@ def encode_data(parsed_data):
 
 def train_test(preprocessed_data):
 	'''
-	Trains a LinearSVC from sklearn using encoded_data
-	where encoded_data is a list of lists where each 
-	list is an example.
+	Trains a KNeighborsClassifier from sklearn
+	using encoded_data where encoded_data is a list
+	of lists where each list is an example.
 	'''
 	all_labels = list(person[0] for person in preprocessed_data)
 	all_features = list(person[4:] for person in preprocessed_data)
 
 	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-	lsvc_classifier = LinearSVC(penalty='l2', loss='l2', C=1.0)
-	lsvc_accuracies = cross_val_score(lsvc_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
+	knn_classifier = KNeighborsClassifier(n_neighbors=5, weights='uniform')
+	scores = cross_val_score(knn_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-	print 'LinearSVC with:' 
-	print '\tpenalty=' + str(lsvc_classifier.penalty)
-	print '\tloss=' + str(lsvc_classifier.loss)
-	print '\tC=' + str(lsvc_classifier.C)
-	print '\nAccuracy:', lsvc_accuracies.mean(), '+/-', lsvc_accuracies.std(), '\n'
+	print 'KNeighborsClassifier with:' 
+	print '\tn_neighbors=' + str(knn_classifier.n_neighbors)
+	print '\tweights=' + str(knn_classifier.weights)
+	print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
 
 def main():
 	parsed_training_data = parse_csv('data.csv')
