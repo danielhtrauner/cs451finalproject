@@ -1,17 +1,7 @@
-cs451finalproject
+cs451finalproject TODO List:
 =================
 
-   ("`-''-/").___..--''"`-._           
-    `@_ @  )   `-.  (     ).`-.__.`)  
-    (_Y_.)'  ._   )  `._ `. ``-..-'  
-  _..`--'_..-_/  /--'_.' ,'  
-((().-''  ((().'  (((.-'            
- RAWWWR! It's the Middlebury Panther!  
-
 (proposal moved to proposal.txt)
-
-TODO List:
-==========
 
 High Priority:
 --------------
