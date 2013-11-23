@@ -1,5 +1,7 @@
 """
-main.py
+main_lsvc.py
+
+(LinearSVC)
 
 CS 451 (Machine Learning) Final Project
 
@@ -10,6 +12,7 @@ All rights reserved.
 WORK LOG:
 ---------
 11/21/13 -- 3:30PM -> ?:??PM -- Started work
+11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
 """
 
 import csv
@@ -76,15 +79,12 @@ def split(data, fraction):
 	'''
 	return (data[0:int(fraction*len(data))], data[int(fraction*len(data)):])
 
-def train_test(preprocessed_data, real_test_data=None):
+def train_test(preprocessed_data):
 	'''
-	Trains a LinearSVC from sklearn
-	using encoded_data where encoded_data is a list
-	of lists and each list is of the form:
-	[label, unique_ID, feature1, feature2...]
+	Trains a LinearSVC from sklearn using encoded_data
+	where encoded_data is a list of lists where each 
+	list is an example.
 	'''
-	average_accuracy = 0.0
-
 	split_fraction = 0.9
 
 	shuffle(preprocessed_data)
@@ -109,33 +109,24 @@ def train_test(preprocessed_data, real_test_data=None):
 	test_features = all_features[1]
 
 	print '\nTraining on', len(train_labels), 'examples...'
-
-	classifier = LinearSVC()
-	classifier.fit(train_features, train_labels)
+	lsvc_classifier = LinearSVC()
+	lsvc_classifier.fit(train_features, train_labels)
 
 	print 'Classifying', len(test_labels), 'examples...\n'
-
-	correct_count = 0.0
+	lsvc_correct_count = 0.0
 	for i in range(len(test_labels)):
+		lsvc_predictions = lsvc_classifier.predict(test_features)
+		lsvc_scores = lsvc_classifier.decision_function(test_features)
+		if test_labels[i] == lsvc_predictions[i]:
+			lsvc_correct_count += 1
+		lsvc_accuracy = lsvc_classifier.score(test_features, test_labels)
 
-		predictions = classifier.predict(test_features)
-		scores = classifier.decision_function(test_features)
-
-		if test_labels[i] == predictions[i]:
-			correct_count += 1
-		accuracy = classifier.score(test_features, test_labels)
-
-	#print chr(27) + "[2J"
-	if not real_test_data:
-		print '\nThe accuracy of one iteration was', accuracy
-	print '\nThe average distance to the hyperplane is', round(scores.mean(), 2), '+/-', round(scores.std(), 2)
-	print
+	print 'LinearSVC:', lsvc_accuracy
+	print 'The average distance to the hyperplane is', round(lsvc_scores.mean(), 2), '+/-', round(lsvc_scores.std(), 2), '\n'
 
 def main():
 	parsed_training_data = parse_csv('data.csv')
-
 	encoded_training_data = encode_data(parsed_training_data)
-
 	train_test(encoded_training_data)
 
 if __name__ == '__main__':

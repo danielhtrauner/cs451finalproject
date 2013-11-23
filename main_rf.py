@@ -1,5 +1,7 @@
 """
-main.py
+main_rf.py 
+
+(RandomForestClassifier)
 
 CS 451 (Machine Learning) Final Project
 
@@ -76,15 +78,12 @@ def split(data, fraction):
 	'''
 	return (data[0:int(fraction*len(data))], data[int(fraction*len(data)):])
 
-def train_test(preprocessed_data, real_test_data=None):
+def train_test(preprocessed_data):
 	'''
-	Trains a LinearSVC from sklearn
+	Trains a RandomForestClassifier from sklearn
 	using encoded_data where encoded_data is a list
-	of lists and each list is of the form:
-	[label, unique_ID, feature1, feature2...]
+	of lists where each list is an example.
 	'''
-	average_accuracy = 0.0
-
 	split_fraction = 0.9
 
 	shuffle(preprocessed_data)
@@ -109,33 +108,21 @@ def train_test(preprocessed_data, real_test_data=None):
 	test_features = all_features[1]
 
 	print '\nTraining on', len(train_labels), 'examples...'
-
-	classifier = RandomForestClassifier()
-	classifier.fit(train_features, train_labels)
+	rf_classifier = RandomForestClassifier(n_estimators=100)
+	rf_classifier.fit(train_features, train_labels)
 
 	print 'Classifying', len(test_labels), 'examples...\n'
-
-	correct_count = 0.0
+	rf_correct_count = 0.0
 	for i in range(len(test_labels)):
+		rf_predictions = rf_classifier.predict(test_features)
+		if test_labels[i] == rf_predictions[i]:
+			rf_correct_count += 1
 
-		predictions = classifier.predict(test_features)
-		scores = classifier.score(test_features, test_labels)
-
-		if test_labels[i] == predictions[i]:
-			correct_count += 1
-		accuracy = classifier.score(test_features, test_labels)
-
-	#print chr(27) + "[2J"
-	if not real_test_data:
-		print '\nThe accuracy of one iteration was', accuracy
-	print '\nThe average distance to the hyperplane is', round(scores.mean(), 2), '+/-', round(scores.std(), 2)
-	print
+	print 'RandomForestClassifier (n_estimators=' + str(rf_classifier.n_estimators) + '):', rf_correct_count/len(test_labels), '\n'
 
 def main():
 	parsed_training_data = parse_csv('data.csv')
-
 	encoded_training_data = encode_data(parsed_training_data)
-
 	train_test(encoded_training_data)
 
 if __name__ == '__main__':
