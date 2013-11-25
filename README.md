@@ -5,11 +5,11 @@ cs451finalproject TODO List:
 
 High Priority:
 --------------
-[x] Set up separate files to begin experimenting with various classifiers  
+[x] Set up separate files to begin experimenting with various classifiers (10/23/13)  
 [ ] Tweak parameters for RandomForestClassifier to obtain an optimal result  
 [ ] Tweak parameters for LinearSVC to obtain an optimal result  
 [ ] Tweak parameters for KNeighborsClassifier to obtain an optimal result  
-[ ] Tweak parameters for AdaBoostClassifier to obtain an optimal result  
+[x] Tweak parameters for AdaBoostClassifier to obtain an optimal result (10/25/13)  
 [ ] Compare results of various experiments and write about which classifier is best for the binary admission/enrollment problem  
 [ ] Write formal final write up  
 
