@@ -24,6 +24,11 @@ import numpy
 
 dictionary = {}
 
+def frange(x, y, jump):
+  while x < y:
+    yield x
+    x += jump
+
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
@@ -83,7 +88,7 @@ def train_test(preprocessed_data):
 	all_features = list(person[4:] for person in preprocessed_data)
 
 	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-	ab_classifier = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1), n_estimators=50, learning_rate=1.0)
+	ab_classifier = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1), n_estimators=49, learning_rate=0.1681744)
 	scores = cross_val_score(ab_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
 	print 'AdaBoostClassifier with:' 
