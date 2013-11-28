@@ -1,0 +1,30 @@
+CS 451 (Machine Learning) Final Project  
+Daniel Trauner and Xi Wang  
+Status Report 
+
+---
+
+Team: 
+
+Daniel Trauner and Xi Wang
+
+Summary:
+
+Since the initial project proposal, we have narrowed down the classifiers within scikit-learn that we plan to use and set up skeleton files to begin tweaking parameters for each one.  We decided to use a 10-fold cross validation as our main metric of evaluation although we will likely add the use of t-tests later on.  We've already tweaked the parameters for AdaBoostClassifier (with decision stumps).  Generally speaking it seems that we might not get to unsupervised learning although it depends how difficult the rest of our parameter tweaking is and what types of comparisons we run.
+
+Results:
+
+(see ab_notes.txt file -- ~67.1% accuracy with AdaBoostClassifier and decision stumps)
+
+Problems:
+
+Since the majority label comprises approximately 61% of the data set (for the admitted vs. not admitted problem) 67.1% is only a slight increase in accuracy over just guessing the majority label.  We'll see how the other classifiers fare.  Worst case we'll use the data we have, but we're also looking for some alternate college admission data to experiment with if the Middlebury Admissions Office can't give us anything else.
+
+Hours:
+
+Together: 5 hours
+Dan: 2 hours
+
+Code:
+
+(see rest of Github repo)
