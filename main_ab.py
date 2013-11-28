@@ -12,7 +12,8 @@ All rights reserved.
 WORK LOG:
 ---------
 11/21/13 -- 3:30PM -> 5:30PM -- Started work
-11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
+11/23/13 -- 3:30PM -> 6:30PM -- Cleaned up hackish code
+11/25/13 -- 4:00PM -> 6:00PM -- Performed experimentation
 """
 
 import csv				
