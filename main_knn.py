@@ -82,7 +82,7 @@ def train_test(preprocessed_data):
 	all_features = list(person[4:] for person in preprocessed_data)
 
 	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-	knn_classifier = KNeighborsClassifier(n_neighbors=5, weights='uniform')
+	knn_classifier = KNeighborsClassifier(n_neighbors=73, weights='distance')
 	scores = cross_val_score(knn_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
 	print 'KNeighborsClassifier with:' 
