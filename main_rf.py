@@ -104,14 +104,7 @@ def train_test_para(preprocessed_data, estimators, depth, features, split, leaf)
 	rf_classifier = RandomForestClassifier(n_jobs=100, n_estimators=estimators, max_depth=depth, max_features=features, min_samples_split=split, min_samples_leaf=leaf)
 	scores = cross_val_score(rf_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-	print 'RandomForestClassifier with:' 
-	print '\tn_estimators=' + str(rf_classifier.n_estimators)
-	print '\tmax_depth=' + str(rf_classifier.max_depth)
-	print '\tmax_features=' + str(rf_classifier.max_features)
-	print '\tmin_samples_split=' + str(rf_classifier.min_samples_split)
-	print '\tmin_samples_leaf=' + str(rf_classifier.min_samples_leaf)
-	print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
-	#return scores.mean()
+	return scores.mean()
 
 def run(data):
 	b_estimator = 0
