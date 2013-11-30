@@ -13,6 +13,7 @@ WORK LOG:
 ---------
 11/21/13 -- 3:30PM -> 5:30PM -- Started work
 11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
+11/29/13 -- 11:00PM -> 2:00AM -- Performed experimentation
 """
 
 import csv				
@@ -93,10 +94,76 @@ def train_test(preprocessed_data):
 	print '\tmin_samples_leaf=' + str(rf_classifier.min_samples_leaf)
 	print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
 
+def train_test_para(preprocessed_data, estimators, depth, features, split, leaf):
+	'''
+	This is the helper function for testing the best parameters.
+	'''
+	all_labels = list(person[0] for person in preprocessed_data)
+	all_features = list(person[4:] for person in preprocessed_data)
+
+	rf_classifier = RandomForestClassifier(n_jobs=100, n_estimators=estimators, max_depth=depth, max_features=features, min_samples_split=split, min_samples_leaf=leaf)
+	scores = cross_val_score(rf_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
+
+	print 'RandomForestClassifier with:' 
+	print '\tn_estimators=' + str(rf_classifier.n_estimators)
+	print '\tmax_depth=' + str(rf_classifier.max_depth)
+	print '\tmax_features=' + str(rf_classifier.max_features)
+	print '\tmin_samples_split=' + str(rf_classifier.min_samples_split)
+	print '\tmin_samples_leaf=' + str(rf_classifier.min_samples_leaf)
+	print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
+	#return scores.mean()
+
+def run(data):
+	b_estimator = 0
+	b_depth = 0
+	best_acc = 0
+	b_split = 0
+	b_leaf = 0
+
+	for estimator in range(1, 25):
+		print 'loop' + str(estimator) + 'done'
+		for depths in range(1, 5): #We only have 4 features, so the the max depth here for sure is from 1 to 10
+			for feature in range(1, 5):
+				for splits in range(1, 5):
+					print 'inside loop' + str(splits) + 'done'
+					for leaves in range(1, 5):
+
+						acc = train_test_para(data, estimator, depths, feature, splits, leaves)
+						if acc > best_acc:
+							best_acc = acc
+							b_estimator = estimator
+							b_depth = depths
+							b_features = feature
+							b_split = splits
+							b_leaf = leaves
+
+
+	print 'RandomForestClassifier with:' 
+	print '\tBest n_estimators=' + str(b_estimator)
+	print '\tBest max_depth=' + str(b_depth)
+	print '\tBest max_features=' + str(b_features)
+	print '\tBest min_samples_split=' + str(b_split)
+	print '\tBest min_samples_leaf=' + str(b_leaf)
+	print '\nBest Accuracy:', best_acc
+
+	"""
+		RandomForestClassifier with:
+			Best n_estimators=11
+			Best max_depth=4
+			Best max_features=2
+			Best min_samples_split=4
+			Best min_samples_leaf=4
+
+			Best Accuracy: 0.686774059014
+	"""
+
+
 def main():
 	parsed_training_data = parse_csv('data.csv')
 	encoded_training_data = encode_data(parsed_training_data)
-	train_test(encoded_training_data)
+	run(encoded_training_data)
+	#train_test(encoded_training_data)
+	
 
 if __name__ == '__main__':
 	main()
