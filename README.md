@@ -7,7 +7,7 @@ High Priority:
 --------------
 [x] Set up separate files to begin experimenting with various classifiers (11/23/13)  
 [x] Tweak parameters for RandomForestClassifier to obtain an optimal result (11/30/13)   
-[ ] Tweak parameters for LinearSVC to obtain an optimal result  
+[x] Tweak parameters for LinearSVC to obtain an optimal result (11/30/13) 
 [x] Tweak parameters for KNeighborsClassifier to obtain an optimal result (11/29/13)  
 [x] Tweak parameters for AdaBoostClassifier to obtain an optimal result (11/25/13)  
 [ ] Compare results of various experiments (ttest) and write about which classifier is best for the binary admission/enrollment problem  
