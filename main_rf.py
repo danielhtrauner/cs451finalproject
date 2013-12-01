@@ -14,6 +14,7 @@ WORK LOG:
 11/21/13 -- 3:30PM -> 5:30PM -- Started work
 11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
 11/29/13 -- 11:00PM -> 2:00AM -- Performed experimentation
+11/30/13 -- 11:00AM -> 5:30PM -- Running program...
 """
 
 import csv				
@@ -83,7 +84,7 @@ def train_test(preprocessed_data):
 	all_features = list(person[4:] for person in preprocessed_data)
 
 	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-	rf_classifier = RandomForestClassifier(n_jobs=2, n_estimators=10, max_depth=None, max_features='auto', min_samples_split=2, min_samples_leaf=1)
+	rf_classifier = RandomForestClassifier(n_jobs=2, n_estimators=11, max_depth=4, max_features=2, min_samples_split=4, min_samples_leaf=4)
 	scores = cross_val_score(rf_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
 	print 'RandomForestClassifier with:' 
@@ -114,11 +115,11 @@ def run(data):
 	b_leaf = 0
 
 	for estimator in range(1, 25):
-		print 'loop' + str(estimator) + 'done'
+		#print 'loop' + str(estimator) + 'done'
 		for depths in range(1, 5): #We only have 4 features, so the the max depth here for sure is from 1 to 10
 			for feature in range(1, 5):
 				for splits in range(1, 5):
-					print 'inside loop' + str(splits) + 'done'
+					#print 'inside loop' + str(splits) + 'done'
 					for leaves in range(1, 5):
 
 						acc = train_test_para(data, estimator, depths, feature, splits, leaves)
@@ -154,8 +155,8 @@ def run(data):
 def main():
 	parsed_training_data = parse_csv('data.csv')
 	encoded_training_data = encode_data(parsed_training_data)
-	run(encoded_training_data)
-	#train_test(encoded_training_data)
+	#run(encoded_training_data)
+	train_test(encoded_training_data)
 	
 
 if __name__ == '__main__':
