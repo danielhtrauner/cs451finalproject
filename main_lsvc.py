@@ -13,6 +13,8 @@ WORK LOG:
 ---------
 11/21/13 -- 3:30PM -> ?:??PM -- Started work
 11/23/13 -- 3:30PM -> ?:??PM -- Cleaned up hackish code
+11/30/13 -- 6:00PM -> 9:00PM -- Performed experimentation
+
 """
 
 import csv
@@ -20,6 +22,7 @@ from random import shuffle
 from sklearn.svm import LinearSVC
 from sklearn.cross_validation import cross_val_score
 import numpy
+import string
 
 dictionary = {}
 
@@ -82,7 +85,7 @@ def train_test(preprocessed_data):
 	all_features = list(person[4:] for person in preprocessed_data)
 
 	print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-	lsvc_classifier = LinearSVC(penalty='l2', loss='l2', C=1.0)
+	lsvc_classifier = LinearSVC(penalty='l2', loss='l2', C=1.167, dual = False, tol = 1e-15)
 	lsvc_accuracies = cross_val_score(lsvc_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
 	print 'LinearSVC with:' 
@@ -91,10 +94,58 @@ def train_test(preprocessed_data):
 	print '\tC=' + str(lsvc_classifier.C)
 	print '\nAccuracy:', lsvc_accuracies.mean(), '+/-', lsvc_accuracies.std(), '\n'
 
+def train_test_para(preprocessed_data, penalty, loss, c):
+	'''
+	This is the helper function for testing the best parameters.
+	'''
+	all_labels = list(person[0] for person in preprocessed_data)
+	all_features = list(person[4:] for person in preprocessed_data)
+
+	p = str(penalty)
+	l = str(loss)
+
+	lsvc_classifier = LinearSVC(penalty=p, loss=l, C=c, dual = False, tol = 1e-15)
+	lsvc_accuracies = cross_val_score(lsvc_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
+
+	return lsvc_accuracies
+
+def run(data):
+
+	b_c = 0
+	b_penalty = 'l1'
+	b_loss = 'l2'
+	b_acc = train_test_para(data, 'l1', 'l2', 1)
+
+	# l1 penalty and l2 loss
+	for c in numpy.arange(0.1, 1.5, 0.001):
+		acc = train_test_para(data, 'l1', 'l2', c)
+		if acc.mean() > b_acc.mean():
+			b_acc = acc
+			b_c = c
+			b_loss = 'l2'
+			b_penalty = 'l1'
+	print "Done with l1 penalty and l2 loss"
+
+	# l2 penalty and l2 loss
+	for c in numpy.arange(0.1, 1.5, 0.001):
+		acc = train_test_para(data, 'l2', 'l2', c)
+		if acc.mean() > b_acc.mean():
+			b_acc = acc
+			b_c = c
+			b_loss = 'l2'
+			b_penalty = 'l2'
+
+	print 'LinearSVC with:' 
+	print '\tpenalty=' + str(b_penalty)
+	print '\tloss=' + str(b_loss)
+	print '\tC=' + str(b_c)
+	print '\nAccuracy:', b_acc.mean(), '+/-', b_acc.std(), '\n'
+
 def main():
 	parsed_training_data = parse_csv('data.csv')
 	encoded_training_data = encode_data(parsed_training_data)
 	train_test(encoded_training_data)
+	#run(encoded_training_data)
 
 if __name__ == '__main__':
 	main()
