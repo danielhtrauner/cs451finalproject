@@ -40,7 +40,7 @@ def build_global_dict(parsed_data):
 	hash_num = max(dictionary.values())+1 if dictionary else 0
 	
 	for person in parsed_data:
-		for i in range(6,len(person)):
+		for i in range(3,len(person)):
 			if person[i] not in dictionary:
 				dictionary[person[i]] = hash_num
 				hash_num += 1
@@ -56,10 +56,10 @@ def parse_csv(path_to_csv_file):
 	with open(path_to_csv_file, 'rU') as csvfile:
 		reader = csv.reader(csvfile, delimiter = ',', quotechar='\"')
 
-		header = reader.next()[1:]
+		header = reader.next()
 
 		for row in reader:
-			parsed_data.append(row[1:])
+			parsed_data.append(row)
 
 	build_global_dict(parsed_data)
 
@@ -71,7 +71,7 @@ def encode_data(parsed_data):
 	for person in parsed_data:
 		applicant = []
 		for i, feature in enumerate(person):
-			if i < 6:
+			if i < 3:
 				applicant.append(int(feature))
 			else:
 				applicant.append(dictionary[feature])
@@ -83,66 +83,19 @@ def train_test(preprocessed_data):
 	'''
 	Trains a KMeans cluster classifier from sklearn 
 	using encoded_data where encoded_data  is a list 
-	of lists where each list is an example.
+	of lists where each list is an example.  Note that
+	there are really no parameters to tweak.
 	'''
-	# avg_acc = 0.0
-	# n = 100
-	# for i in range(n):
-	# 	shuffle(preprocessed_data)
-
-	# 	all_labels = list(person[0] for person in preprocessed_data)
-	# 	all_features = list(person[4:] for person in preprocessed_data)
-	# 	km_classifier = KMeans(base_estimator=DecisionTreeClassifier(max_depth=1), n_estimators=49, learning_rate=0.1681744)
-	# 	scores = cross_val_score(km_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
-
-	# 	avg_acc += scores.mean()
-
-	# print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized KMeans classifier.\n'
-
-	# TESTING CODE
-	# ------------
 	all_labels = list(person[0] for person in preprocessed_data)
-	all_features = list(person[4:] for person in preprocessed_data)
+	all_features = list(person[1:] for person in preprocessed_data)
 
-	best_n = 0
-	best_lr = 0
-	best_acc = 0
-	best_std = 0
-	i = 1
-	for n_i in range(1,101):
-		for lr_i in frange(0.1,0.21,0.01):
-			# print '\nPerforming a 10-fold cross validation with', len(preprocessed_data), 'examples...\n'
-			ab_classifier = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1), n_estimators=n_i, learning_rate=lr_i) #best lr=0.1681744
-			scores = cross_val_score(ab_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
+	n = 100
 
-			# print 'AdaBoostClassifier with:' 
-			# print '\tbase_estimator=' + str(ab_classifier.base_estimator)
-			# print '\tn_estimators=' + str(ab_classifier.n_estimators)
-			# print '\tlearning_rate=' + str(ab_classifier.learning_rate)
-			# print '\nAccuracy:', scores.mean(), '+/-', scores.std(), '\n'
+	km_classifier = KMeans(n_clusters=5, n_init=n, max_iter=300, tol=0.0001, precompute_distances=True, n_jobs=2)
+	predictions = km_classifier.fit_predict(preprocessed_data[1:]).tolist()
 
-			if scores.mean() > best_acc:
-				best_be = ab_classifier.base_estimator
-				best_n = n_i
-				best_lr = lr_i
-				best_acc = scores.mean()
-				best_std = scores.std()
-			print chr(27) + "[2J"
-			print 'In', i, 'iterations the AdaBoostClassifier with the current highest accuracy has:' 
-			print '\tbase_estimator=' + str(ab_classifier.base_estimator)
-			print '\tn_estimators=' + str(best_n)
-			print '\tlearning_rate=' + str(best_lr)
-			print '\nAccuracy:', best_acc, '+/-', best_std, '\n'
-
-			i += 1
-
-	print chr(27) + "[2J"
-	print '='*100
-	print 'The AdaBoostClassifier with the highest overall accuracy had:' 
-	print '\tbase_estimator=' + str(best_be)
-	print '\tn_estimators=' + str(best_n)
-	print '\tlearning_rate=' + str(best_lr)
-	print '\nAccuracy:', best_acc, '+/-', best_std, '\n'
+	print all_labels[0:5]
+	print predictions[0:5]
 
 def main():
 	parsed_training_data = parse_csv('multi_data.csv')
