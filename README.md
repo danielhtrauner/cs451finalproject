@@ -11,7 +11,7 @@ High Priority:
 [x] Tweak parameters for KNeighborsClassifier to obtain an optimal result (11/29/13)  
 [x] Tweak parameters for AdaBoostClassifier to obtain an optimal result (11/25/13)  
 
-[x] Compare results of various experiments (ttest)  
+[x] Compare results of various experiments (ttest) (12/2/13)  
 
 [ ] Make 2-3 PPT slides and prepare for in-class Friday presentation  
 
@@ -19,9 +19,9 @@ High Priority:
 
 Medium Priority:  
 ----------------
-[x] Set up a multi-class problem and any required files  
+[x] Set up a multi-class problem and any required files (12/2/13)  
 
-[x] Tweak parameters for the multi-class classifier(s) to obtain an optimal result  
+[x] Tweak parameters for the multi-class classifier(s) to obtain an optimal result (12/2/13)  
 
 [ ] Write about the results (add to formal write up)  
 

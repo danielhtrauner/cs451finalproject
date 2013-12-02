@@ -1,5 +1,5 @@
 """
-main_ab.py 
+binary_ab.py 
 
 (AdaBoostClassifier)
 
@@ -14,7 +14,8 @@ WORK LOG:
 11/21/13 -- 3:30PM -> 5:30PM -- Started work
 11/23/13 -- 3:30PM -> 6:30PM -- Cleaned up hackish code
 11/25/13 -- 4:00PM -> 6:00PM -- Performed experimentation
-12/01/13 -- 2:30PM -> ?:??PM -- Added back testing code
+12/02/13 -- 2:30PM -> 3:30PM -- Added back testing code
+12/02/13 -- 3:30PM -> 6:30PM -- More experiments
 """
 
 import csv
@@ -38,7 +39,7 @@ def frange(x, y, inc):
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
-	to the global dictionarya
+	to the global dictionary.
 	'''
 	global dictionary
 	
@@ -72,6 +73,11 @@ def parse_csv(path_to_csv_file):
 	return parsed_data
 
 def encode_data(parsed_data):
+	'''
+	Substitutes in the non-numerical features
+	for their corresponding values in the global
+	dictionary.
+	'''
 	global dictionary
 	encoded_data = []
 	for person in parsed_data:

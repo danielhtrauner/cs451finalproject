@@ -11,30 +11,19 @@ All rights reserved.
 
 WORK LOG:
 ---------
-12/2/13 -- 4:30PM -> 6:30PM -- Started + experiments
+12/2/13 -- 4:30PM -> 6:30PM -- Started work + experiments
 """
 
 import csv
-from random import shuffle
 from sklearn.cluster import KMeans
-import numpy
 from collections import Counter
 
 dictionary = {}
 
-def frange(x, y, inc):
-	'''
-	A generator that acts as a range() for float
-	values.
-	'''
-	while x < y:
-		yield x
-		x += inc
-
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
-	to the global dictionary
+	to the global dictionary.
 	'''
 	global dictionary
 	
@@ -67,6 +56,11 @@ def parse_csv(path_to_csv_file):
 	return parsed_data
 
 def encode_data(parsed_data):
+	'''
+	Substitutes in the non-numerical features
+	for their corresponding values in the global
+	dictionary.
+	'''
 	global dictionary
 	encoded_data = []
 	for person in parsed_data:
@@ -85,10 +79,8 @@ def train_test(preprocessed_data):
 	Trains a KMeans cluster classifier from sklearn 
 	using encoded_data where encoded_data is a list 
 	of lists where each list is an example.  Note that
-	there are no parameters to tweak.
+	there are no important parameters to tweak.
 	'''
-	shuffle(preprocessed_data)
-
 	all_labels = list(person[0] for person in preprocessed_data)
 	all_features = list(person[1:] for person in preprocessed_data)
 
@@ -101,12 +93,9 @@ def train_test(preprocessed_data):
 	# disgusting Python to get rid of a runtime error due to the score method wanting float instead of int64 input
 	neg_kmeans = km_classifier.score([[float(feature) for feature in person] for person in all_features])
 
-	label_distribution = Counter(all_labels)
-	cluster_distribution = Counter(predictions)
-
 	print '\nNegated KMeans function value:', neg_kmeans
-	print 'Data distribution by label:', label_distribution
-	print 'Data Distribution by cluster:', cluster_distribution, '\n'
+	print 'Data distribution by label:', Counter(all_labels)
+	print 'Data Distribution by cluster:', Counter(predictions), '\n'
 
 def main():
 	parsed_training_data = parse_csv('multi_data.csv')

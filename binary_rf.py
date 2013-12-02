@@ -1,5 +1,5 @@
 """
-main_rf.py 
+binary_rf.py 
 
 (RandomForestClassifier)
 
@@ -15,6 +15,7 @@ WORK LOG:
 11/23/13 -- 3:30PM -> 6:30PM -- Cleaned up hackish code
 11/29/13 -- 11:00PM -> 2:00AM -- Performed experimentation
 11/30/13 -- 11:00AM -> 5:30PM -- Running program...
+12/02/13 -- 3:30PM -> 6:30PM -- More experiments
 """
 
 import csv				
@@ -28,7 +29,7 @@ dictionary = {}
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
-	to the global dictionary
+	to the global dictionary.
 	'''
 	global dictionary
 	
@@ -62,6 +63,11 @@ def parse_csv(path_to_csv_file):
 	return parsed_data
 
 def encode_data(parsed_data):
+	'''
+	Substitutes in the non-numerical features
+	for their corresponding values in the global
+	dictionary.
+	'''
 	global dictionary
 	encoded_data = []
 	for person in parsed_data:
@@ -181,6 +187,5 @@ def main():
 	#run(encoded_training_data)
 	train_test(encoded_training_data)
 	
-
 if __name__ == '__main__':
 	main()
