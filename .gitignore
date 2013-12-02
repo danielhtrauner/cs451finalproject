@@ -1,7 +1,5 @@
 ### DATA ###
 *.csv
-*.xlsx
-*.xls
 
 ### OSX ###
 .DS_Store
