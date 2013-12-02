@@ -1,0 +1,15 @@
+Notes on Multi-Class KMeans Experimentation
+
+---
+
+Goal:
+	
+
+Optimal Values:
+	
+
+Method:
+	
+
+Result:
+	

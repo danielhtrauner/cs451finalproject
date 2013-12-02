@@ -13,7 +13,7 @@ Optimal Values:
 	min_samples_leaf = 4
 
 Method:
-	(Similar for all classifiers...)  Loop over large range of values using multiple nested loops to test variable combinations simultaneously and gradually converge the bounds of each loop with smaller step values centered on the optimal values of each iteration.  Eventually stop (I stopped at six figures for learning_rate).
+	(Similar for all classifiers...)  Loop over large range of values using multiple nested loops to test variable combinations simultaneously and gradually converge the bounds of each loop with smaller step values centered on the optimal values of each iteration.  See testing code (left in for this one) for more details.
 
 Result:
 	10-Fold CV Accuracy: 0.686774059014 +/- 0.018149844248

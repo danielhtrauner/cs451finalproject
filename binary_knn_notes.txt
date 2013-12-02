@@ -1,0 +1,16 @@
+Notes on KNeighborsClassifier Experimentation
+
+---
+
+Goal:
+	Achieve the highest 10-fold cross validation accuracy score over all examples.
+
+Optimal Values:
+	n_neighbors = 73
+	weights = 'distance'
+
+Method:
+	(Similar for all classifiers...)  Loop over large range of values using multiple nested loops to test variable combinations simultaneously and gradually converge the bounds of each loop with smaller step values centered on the optimal values of each iteration.  In this case I simply had to test between using 1-1389 neighbors and whether to weight all neighbors' "votes" uniformly or proportional to their distance from the test example.  (See testing code which was left in for more information.)
+
+Result:
+	10-Fold CV Accuracy: 0.667370451465 +/- 0.024044482289 
