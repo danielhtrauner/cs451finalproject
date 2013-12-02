@@ -32,7 +32,8 @@ def build_global_dict(parsed_data):
 	'''
 	global dictionary
 	
-	hash_num = max(dictionary.values())+1 if dictionary else 0
+	#Lowest dictionary number from 801 due to the SAT score up to 800.
+	hash_num = max(dictionary.values())+1 if dictionary else 801
 	
 	for person in parsed_data:
 		for i in range(6,len(person)):
@@ -80,7 +81,8 @@ def train_test(preprocessed_data):
 	using encoded_data where encoded_data is a list
 	of lists where each list is an example.
 	'''
-	avg_acc = 0.0
+	#avg_acc = 0.0
+	avg_scores = [0.0]*10
 	n = 100
 	for i in range(n):
 		shuffle(preprocessed_data)
@@ -91,10 +93,12 @@ def train_test(preprocessed_data):
 		rf_classifier = RandomForestClassifier(n_jobs=2, n_estimators=11, max_depth=4, max_features=2, min_samples_split=4, min_samples_leaf=4)
 		scores = cross_val_score(rf_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-		avg_acc += scores.mean()
-
-	print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized RandomForestClassifier.\n'
-
+		#avg_acc += scores.mean()
+		for i in range(10):
+			avg_scores[i] += scores[i]
+	#print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized RandomForestClassifier.\n'
+	for score in avg_scores:
+		print score/n
 # TESTING CODE
 # ------------
 # 	all_labels = list(person[0] for person in preprocessed_data)

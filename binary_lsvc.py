@@ -25,6 +25,15 @@ import string
 
 dictionary = {}
 
+def frange(x, y, inc):
+	'''
+	A generator that acts as a range() for float
+	values.
+	'''
+	while x < y:
+		yield x
+		x += inc
+
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
@@ -32,7 +41,8 @@ def build_global_dict(parsed_data):
 	'''
 	global dictionary
 	
-	hash_num = max(dictionary.values())+1 if dictionary else 0
+	#Lowest dictionary number from 801 due to the SAT score up to 800.
+	hash_num = max(dictionary.values())+1 if dictionary else 801
 	
 	for person in parsed_data:
 		for i in range(6,len(person)):
@@ -80,20 +90,22 @@ def train_test(preprocessed_data):
 	where encoded_data is a list of lists where each 
 	list is an example.
 	'''
-	avg_acc = 0.0
-	n = 100
+	avg_scores = [0.0]*10
+	n = 1
 	for i in range(n):
-		shuffle(preprocessed_data)
+		#shuffle(preprocessed_data)
 
 		all_labels = list(person[0] for person in preprocessed_data)
 		all_features = list(person[4:] for person in preprocessed_data)
-		lsvc_classifier = LinearSVC(penalty='l2', loss='l2', C=1.167, dual = False, tol = 1e-15)
+		lsvc_classifier = LinearSVC(penalty='l2', loss='l2', C=4.7, dual = False, tol = 1e-15)
 		scores = cross_val_score(lsvc_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-		avg_acc += scores.mean()
+		for i in range(10):
+			avg_scores[i] += scores[i]
 
-	print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized LinearSVC.\n'
-
+	#print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized LinearSVC.\n'
+	for score in avg_scores:
+		print score/n
 # TESTING CODE
 # ------------
 # 	all_labels = list(person[0] for person in preprocessed_data)
@@ -134,7 +146,7 @@ def train_test(preprocessed_data):
 # 	b_acc = train_test_para(data, 'l1', 'l2', 1)
 
 # 	# l1 penalty and l2 loss
-# 	for c in numpy.arange(0.1, 1.5, 0.001):
+# 	for c in frange(0.1, 5.1, 0.05):
 # 		acc = train_test_para(data, 'l1', 'l2', c)
 # 		if acc.mean() > b_acc.mean():
 # 			b_acc = acc
@@ -144,7 +156,7 @@ def train_test(preprocessed_data):
 # 	print "Done with l1 penalty and l2 loss"
 
 # 	# l2 penalty and l2 loss
-# 	for c in numpy.arange(0.1, 1.5, 0.001):
+# 	for c in frange(0.1, 5.1, 0.05):
 # 		acc = train_test_para(data, 'l2', 'l2', c)
 # 		if acc.mean() > b_acc.mean():
 # 			b_acc = acc

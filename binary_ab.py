@@ -38,11 +38,12 @@ def frange(x, y, inc):
 def build_global_dict(parsed_data):
 	'''
 	Adds all of the word features in parsed_data
-	to the global dictionary
+	to the global dictionarya
 	'''
 	global dictionary
 	
-	hash_num = max(dictionary.values())+1 if dictionary else 0
+	#Lowest dictionary number from 801 due to the SAT score up to 800.
+	hash_num = max(dictionary.values())+1 if dictionary else 801
 	
 	for person in parsed_data:
 		for i in range(6,len(person)):
@@ -90,20 +91,24 @@ def train_test(preprocessed_data):
 	from sklearn using encoded_data where encoded_data 
 	is a list of lists where each list is an example.
 	'''
-	avg_acc = 0.0
-	n = 100
+	#avg_acc = 0.0
+	avg_scores = [0.0]*10
+	n = 1
 	for i in range(n):
-		shuffle(preprocessed_data)
+		#shuffle(preprocessed_data)
 
 		all_labels = list(person[0] for person in preprocessed_data)
 		all_features = list(person[4:] for person in preprocessed_data)
 		ab_classifier = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1), n_estimators=49, learning_rate=0.1681744)
 		scores = cross_val_score(ab_classifier, numpy.array(all_features), numpy.array(all_labels), cv=10)
 
-		avg_acc += scores.mean()
+		for i in range(10):
+		 	avg_scores[i] += scores[i]
+		#avg_acc += scores.mean()
 
-	print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized AdaBoostClassifier.\n'
-
+	#print '\nThe average accuracy of', n, '10-fold CVs is', avg_acc/n, 'for an optimized AdaBoostClassifier.\n'
+	for score in avg_scores:
+	 	print score/n
 	# TESTING CODE
 	# ------------
 	# all_labels = list(person[0] for person in preprocessed_data)

@@ -8,7 +8,7 @@ Goal:
 Optimal Values:
 	penalty = l2
 	loss = l2
-	C = 1.167
+	C = 4.7
 
 
 Method:
@@ -17,31 +17,12 @@ Method:
 	Note: sklrean does not support "l1" penalty with "l1" loss and "l2" penalty with "l1" loss
 
 Result:
-	10-Fold CV Accuracy: 0.673834845167 +/- 0.0315593696115
+	LinearSVC with:
+		penalty=l2
+		loss=l2
+		C=4.7
 
-	Step 1 - C from 0.1 to 5, with 0.1 step: 
-		LinearSVC with:
-			penalty=l2
-			loss=l2
-			C=1.2
-
-		Accuracy: 0.673834845167 +/- 0.0315593696115
-
-	Step 2 - C from 0.1 to 2, with 0.01 step:
-		LinearSVC with:
-			penalty=l2
-			loss=l2
-			C=1.17
-
-		Accuracy: 0.673834845167 +/- 0.0315593696115 
-
-	Step 3 - C from 0.1 to 1.5 with 0.001 step:
-		LinearSVC with:
-			penalty=l2
-			loss=l2
-			C=1.167
-
-		Accuracy: 0.673834845167 +/- 0.0315593696115	
+	Accuracy: 0.67743718069 +/- 0.0322929649469 	
 
 
 
