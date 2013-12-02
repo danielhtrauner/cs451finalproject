@@ -3,13 +3,15 @@ Notes on Multi-Class KMeans Experimentation
 ---
 
 Goal:
-	
+	Minimize (or maximize negated value; i.e. closer to zero the better) the KMeans.score() function.
 
 Optimal Values:
-	
+	There are no "optimal" values since there was nothing to tweak
 
 Method:
-	
+	Simply leave most parameters at default, except fix the number of clusters at 5 (in our multi_data.csv file 0=not admitted, 1=admitted september not enrolled, 2=admitted september enrolled, 3=admitted february not enrolled, and 4=admitted february enrolled).  I also opted to run the clustering 100 times with different seeds instead of 10 times (the default value).
 
 Result:
-	
+	Negated KMeans function value: -4895731.87082
+	Data distribution by label: Counter({0: 856, 2: 251, 1: 173, 4: 71, 3: 38})
+	Data Distribution by cluster: Counter({4: 336, 0: 306, 2: 284, 3: 267, 1: 196})

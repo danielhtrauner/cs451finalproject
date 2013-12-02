@@ -11,13 +11,14 @@ All rights reserved.
 
 WORK LOG:
 ---------
-12/2/13 -- 4:30PM -> ?:??PM -- Started work
+12/2/13 -- 4:30PM -> 6:30PM -- Started + experiments
 """
 
 import csv
 from random import shuffle
 from sklearn.cluster import KMeans
 import numpy
+from collections import Counter
 
 dictionary = {}
 
@@ -37,7 +38,7 @@ def build_global_dict(parsed_data):
 	'''
 	global dictionary
 	
-	hash_num = max(dictionary.values())+1 if dictionary else 0
+	hash_num = max(dictionary.values())+1 if dictionary else 801
 	
 	for person in parsed_data:
 		for i in range(3,len(person)):
@@ -82,20 +83,30 @@ def encode_data(parsed_data):
 def train_test(preprocessed_data):
 	'''
 	Trains a KMeans cluster classifier from sklearn 
-	using encoded_data where encoded_data  is a list 
+	using encoded_data where encoded_data is a list 
 	of lists where each list is an example.  Note that
-	there are really no parameters to tweak.
+	there are no parameters to tweak.
 	'''
+	shuffle(preprocessed_data)
+
 	all_labels = list(person[0] for person in preprocessed_data)
 	all_features = list(person[1:] for person in preprocessed_data)
 
 	n = 100
 
 	km_classifier = KMeans(n_clusters=5, n_init=n, max_iter=300, tol=0.0001, precompute_distances=True, n_jobs=2)
-	predictions = km_classifier.fit_predict(preprocessed_data[1:]).tolist()
 
-	print all_labels[0:5]
-	print predictions[0:5]
+	predictions = km_classifier.fit_predict(all_features).tolist()
+
+	# disgusting Python to get rid of a runtime error due to the score method wanting float instead of int64 input
+	neg_kmeans = km_classifier.score([[float(feature) for feature in person] for person in all_features])
+
+	label_distribution = Counter(all_labels)
+	cluster_distribution = Counter(predictions)
+
+	print '\nNegated KMeans function value:', neg_kmeans
+	print 'Data distribution by label:', label_distribution
+	print 'Data Distribution by cluster:', cluster_distribution, '\n'
 
 def main():
 	parsed_training_data = parse_csv('multi_data.csv')

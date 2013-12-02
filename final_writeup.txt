@@ -1,3 +1,6 @@
+majority label:
+	not admitted (856/1389) 0.6162706983441325
+
 100 x 10-fold cv average for each optimized binary classifier:
 	The average accuracy of 100 10-fold CVs is 0.66936158899 for an optimized LinearSVC.
 	The average accuracy of 100 10-fold CVs is 0.663921488896 for an optimized AdaBoostClassifier.
