@@ -13,9 +13,9 @@ High Priority:
 
 [x] Compare results of various experiments (ttest) (12/2/13)  
 
-[ ] Make 2-3 PPT slides and prepare for in-class Friday presentation  
+[x] Make 2-3 PPT slides and prepare for in-class Friday presentation  
 
-[ ] Write formal final write up  
+[x] Write formal final write up  
 
 Medium Priority:  
 ----------------
@@ -23,7 +23,7 @@ Medium Priority:
 
 [x] Tweak parameters for the multi-class classifier(s) to obtain an optimal result (12/2/13)  
 
-[ ] Write about the results (add to formal write up)  
+[x] Write about the results (add to formal write up)  
 
 Low Priority:  
 -------------  
